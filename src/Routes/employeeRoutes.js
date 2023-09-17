@@ -9,7 +9,11 @@ router.post('/', createUser)
 router.get('/:id', getById)
 router.patch('/:id', updateSingle)
 router.delete('/:id', deleteUser)
-router.get(':id/tasks', tasksByID)
+router.get('/:id/tasks', tasksByID)
 router.post('/:id/tasks', taskForSingleUser)
+
+function hello(){
+    console.log("hii")
+}
 
 module.exports = router;

@@ -11,10 +11,7 @@ const taskSchema = new mongoose.Schema({
   dueDate: {
     type: Date,
   },
-  employeeId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
+  
 },{versionKey:false});
 
 const Task = mongoose.model('Task', taskSchema);

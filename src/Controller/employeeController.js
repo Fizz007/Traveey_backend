@@ -34,10 +34,9 @@ const getAllUser = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-  const { id } = req.body;
-
+  const { id } = req.params;
   try {
-    const singleEmpl = await Employee.findById({ _id: id});
+    const singleEmpl = await Employee.findById({_id:id});
     res.status(200).json({ employee: singleEmpl });
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -61,7 +60,7 @@ const updateSingle = async (req, res) => {
     const updatedEmployee = await Employee.findByIdAndUpdate(id, {
       $set: req.body,
     });
-    res.status(201).json({ message: "Updated", updatedEmployee });
+    res.status(201).json({ message: "Updated"});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -74,7 +73,7 @@ const tasksByID = async (req, res) => {
     if (!employee) {
       return res.status(404).json({ error: "Employee not found" });
     }
-    
+    console.log(employee)
     const tasks = await Tasks.find({ _id: { $in: employee.tasks } });
     res.json(tasks);
   } catch (error) {
@@ -85,7 +84,7 @@ const tasksByID = async (req, res) => {
 const taskForSingleUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const employee = await Employee.findById(id);
+    const employee = await Employee.findById({_id:id});
     if (!employee) {
       return res.status(404).json({ error: "Employee not found" });
     }
@@ -95,14 +94,13 @@ const taskForSingleUser = async (req, res) => {
       title,
       description,
       dueDate,
-      employeeId: employee._id,
     });
-
-    employee.tasks.push(newTask);
+    
+    employee['task'] = newTask
     await employee.save();
     res
-      .status(201)
-      .json({ message: "new task created for an employee", task: newTask });
+      .status(200)
+      .json({ message: "new task created", task: newTask });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
